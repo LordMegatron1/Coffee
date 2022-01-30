@@ -9,3 +9,6 @@
 * **Fast and right written code**
 
 # Design Images 
+***Sign in page***            |  ***Sign up page***
+:-------------------------------:|:-------------------------------:
+![img](https://user-images.githubusercontent.com/45388866/151715771-96a9e643-70ac-4a20-820c-9deb447007f3.png)  |  ![img](https://user-images.githubusercontent.com/45388866/151715772-abe79339-ffc0-40c3-a22f-2fba13ae5e62.png)
