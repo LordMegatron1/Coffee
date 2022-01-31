@@ -17,9 +17,18 @@ void main() {
         home: MainScreen()),
   );
 }
-class MainScreen extends StatelessWidget{
+class MainScreen extends StatefulWidget{
+  MainScreenState createState()=> MainScreenState();
+}
+
+class MainScreenState extends State<MainScreen>{
   bool usersigned = false;
+
+  //bool to show password ->
+  bool passwordVisible = false;
+
   //VOIDS :
+
   //SIGN IN TO SYSTEM VIA EMAIL & PASSWORD
   void signInWithEmailAndPassword(String email, String password, void Function(FirebaseAuthException e) errorCallback) async {
     await Firebase.initializeApp();
@@ -69,7 +78,9 @@ class MainScreen extends StatelessWidget{
           Padding(padding: EdgeInsets.symmetric(vertical: height/25 , horizontal: width/25),child: Align(alignment: Alignment.centerLeft,child:  Text("Please sign in to continue" , style: GoogleFonts.comicNeue(textStyle: const TextStyle(fontSize: 18,color: Colors.white))))),
 
           SizedBox(width: width, child: Padding(padding: EdgeInsets.only(top:height/50 , right: width/25 , left: width/25),child:Align(alignment: Alignment.centerLeft,
-              child:TextFormField(controller: email,decoration: const InputDecoration( prefixIcon: Padding(padding: EdgeInsets.only() ,
+              //< keyboard type check -->
+              child:TextFormField(controller: email, keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration( prefixIcon: Padding(padding: EdgeInsets.only() ,
                   child: IconTheme(data: IconThemeData(color: Colors.white), child: Icon(Icons.email))),
 
                   enabledBorder:UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)), focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)), hintStyle: TextStyle(fontSize: 22 , color: Colors.white),
@@ -79,11 +90,30 @@ class MainScreen extends StatelessWidget{
                   return "PLEASE ENTER YOUR LOGIN OR EMAIL";}
                 return null;}))
           )),
+
+          //password ->
           SizedBox(width:width, child: Padding(padding: EdgeInsets.symmetric(vertical: height/50 , horizontal: width/25),child: Align(alignment: Alignment.centerLeft,
-              child:TextFormField( controller: password,decoration: const InputDecoration( prefixIcon: Padding(padding: EdgeInsets.only() ,
+              child:TextFormField( controller: password, keyboardType: TextInputType.text,
+                  obscureText: !passwordVisible, //this will obscure text dynamically
+                  decoration: InputDecoration( prefixIcon: Padding(padding: EdgeInsets.only() ,
                   child: IconTheme(data: IconThemeData(color: Colors.white), child: Icon(Icons.password))),
                   enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),hintStyle: TextStyle(fontSize: 22 , color: Colors.black),
-                  hintText: "" , labelText: "PASSWORD" , labelStyle: TextStyle(fontSize: 18 , color: Colors.white)),
+                  hintText: "" , labelText: "PASSWORD" , labelStyle: TextStyle(fontSize: 18 , color: Colors.white),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            passwordVisible = !passwordVisible;
+                          });
+                        },
+                      ),
+                  ),
                   style: GoogleFonts.comicNeue(textStyle: const TextStyle(fontSize: 24 , fontWeight: FontWeight.bold , color: Colors.white)),validator: (String?value){
                 if(value == null ||value.isEmpty){
                   return "PLEASE ENTER YOUR PASSWORD";}
@@ -98,7 +128,8 @@ class MainScreen extends StatelessWidget{
                     //after this was successfully logged in navigate it to hello page ==>
                     Future.delayed(const Duration(milliseconds: 1500), () {
                       // Here you can write your code
-                      if(usersigned==true){
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if(usersigned==true && user!.emailVerified){
                         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>
                             getData()),(route)=>false);
                       }
@@ -122,8 +153,14 @@ class MainScreen extends StatelessWidget{
     );
   }
 }
+class SignUpPage extends StatefulWidget{
+  SignUpPageState createState()=> SignUpPageState();
+}
 
-class SignUpPage extends StatelessWidget{
+class SignUpPageState extends State<SignUpPage>{
+
+  bool password1 = false;
+  bool password2 = false;
   //VOIDS :
   //register account
   void registerAccount(String email, String displayName, String password, void Function(FirebaseAuthException e) errorCallback) async {
@@ -189,21 +226,53 @@ class SignUpPage extends StatelessWidget{
                   return null;}))
             )),
             SizedBox(width:width, child: Padding(padding: EdgeInsets.symmetric(vertical: height/50 , horizontal: width/25),child: Align(alignment: Alignment.centerLeft,
-                child:TextFormField( controller: password,decoration: const InputDecoration( prefixIcon: Padding(padding: EdgeInsets.only() ,
+                child:TextFormField( controller: password, obscureText: !password1,
+                    decoration: InputDecoration( prefixIcon: Padding(padding: EdgeInsets.only() ,
                     child: IconTheme(data: IconThemeData(color: Colors.white), child: Icon(Icons.password))),
                     enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.green)),focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
                     hintText: "" , hintStyle: TextStyle(fontSize: 22 , color: Colors.white),
-                    labelText: "PASSWORD" , labelStyle: TextStyle(fontSize: 18 , color: Colors.white)),
+                    labelText: "PASSWORD" , labelStyle: TextStyle(fontSize: 18 , color: Colors.white),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          password1
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            password1 = !password1;
+                          });
+                        },
+                      ),
+                    ),
                     style: GoogleFonts.comicNeue(textStyle: const TextStyle(fontSize: 24 , fontWeight: FontWeight.bold , color: Colors.white)),validator: (String?value){
                   if(value == null ||value.isEmpty){
                     return "PLEASE ENTER YOUR PASSWORD";}
                   return null;})))),
             SizedBox(width:width, child: Padding(padding: EdgeInsets.symmetric(vertical: height/50 , horizontal: width/25),child: Align(alignment: Alignment.centerLeft,
-                child:TextFormField( controller: retrypassword,decoration: const InputDecoration( prefixIcon: Padding(padding: EdgeInsets.only() ,
+                child:TextFormField( controller: retrypassword,obscureText: !password2,
+                    decoration: InputDecoration( prefixIcon: Padding(padding: EdgeInsets.only() ,
                     child: IconTheme(data: IconThemeData(color: Colors.white), child: Icon(Icons.password))),
                     enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.green)),focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
                     hintText: "" ,hintStyle: TextStyle(fontSize: 22 , color: Colors.white),
-                    labelText: " CONFIRM PASSWORD" , labelStyle: TextStyle(fontSize: 18 , color: Colors.white)),
+                    labelText: " CONFIRM PASSWORD" , labelStyle: TextStyle(fontSize: 18 , color: Colors.white),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          password2
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            password2 = !password2;
+                          });
+                        },
+                      ),
+                    ),
                     style: GoogleFonts.comicNeue(textStyle: const TextStyle(fontSize: 24 , fontWeight: FontWeight.bold , color: Colors.white)),validator: (String?value){
                   if(value == null ||value.isEmpty){
                     return "PLEASE ENTER YOUR PASSWORD";}
@@ -244,6 +313,9 @@ class SignUpPage extends StatelessWidget{
                             }
                             else{
                               registerAccount(email.text, FullName.text, password.text, (e) { });
+                              //send veritification email ->
+                              User? user = FirebaseAuth.instance.currentUser;
+                              user!.sendEmailVerification();
                               //show that user creation was success and navigate it to log in screen
                               Fluttertoast.showToast(
                                   msg: "CONGRATULATION!USER CREATED!",
@@ -255,7 +327,7 @@ class SignUpPage extends StatelessWidget{
                                   fontSize: 16.0
                               );
                               //navigate to log in screen
-                              Timer(Duration(seconds: 2), () {
+                              Timer(Duration(seconds: 1), () {
                                 Navigator.pop(context);
                               });
                             }
