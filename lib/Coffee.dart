@@ -59,7 +59,7 @@ class getData extends StatelessWidget{
       QuerySnapshot querySnapshot = await collectiontogetMainPageTopWeek.get();
 
       // Get data from docs and it will be json string
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toString();
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList().toString();
       //show json string ->
       String workingstring = allData.substring(1,allData.length-1).replaceAll(":", "").replaceAll("{", "").replaceAll("}", "");
 
@@ -93,18 +93,21 @@ class getData extends StatelessWidget{
         }
       }
     }
+
     Future<void> getDatafromMainPageAssortments() async {
       // Get docs from collection reference
       QuerySnapshot querySnapshot = await collectiontogetMainPageAssortments.get();
-
       // Get data from docs and it will be json string
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toString();
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList().toString();
+
       //show json string ->
       String workingstring = allData.substring(1,allData.length-1).replaceAll(":", "").replaceAll("{", "").replaceAll("}", "");
 
       for (String a in workingstring.split(", ")) {
+
         //show data -->
         String work =a.substring(7,a.length);
+
         if(work.substring(0,1)=="n"){
           //if value is name ->
           String data = work.substring(5,work.length);
@@ -146,7 +149,7 @@ class getData extends StatelessWidget{
       QuerySnapshot querySnapshot = await collectiontogetFavorites.get();
 
       // Get data from docs and it will be json string
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toString();
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList().toString();
       //show json string ->
       String workingstring = allData.substring(1,allData.length-1).replaceAll(":", "").replaceAll("{", "").replaceAll("}", "");
 
@@ -182,6 +185,7 @@ class getData extends StatelessWidget{
           }
         }
       }
+
       //change assortment -->
       for(int i=0;i<productname_assortment.length;i++){
         for(int j=0; j<productname_favorites.length;j++){
@@ -570,12 +574,12 @@ class TopWeekState extends State<TopWeek>{
                                       height: 0.075*height,
                                     ),
                                     SizedBox(
-                                      height: 20,
-                                      child: Text(
-                                        shopName + '\'s',
-                                        style: GoogleFonts.comicNeue(textStyle: const TextStyle(
-                                            fontSize: 20,color: Colors.white , fontWeight: FontWeight.bold)),
-                                      )
+                                        height: 20,
+                                        child: Text(
+                                          shopName + '\'s',
+                                          style: GoogleFonts.comicNeue(textStyle: const TextStyle(
+                                              fontSize: 20,color: Colors.white , fontWeight: FontWeight.bold)),
+                                        )
                                     ),
                                     SizedBox(height: 10),
                                     SizedBox(height: 32,child: Text(
@@ -586,14 +590,13 @@ class TopWeekState extends State<TopWeek>{
                                     ),
                                     SizedBox(height: 5),
                                     SizedBox(
-                                      height: height*0.16,
+                                      height: height*0.175,
                                       child: Text(
                                           description,
                                           style: GoogleFonts.comicNeue(textStyle: const TextStyle(
-                                              fontSize: 14,color: Colors.white , fontWeight: FontWeight.bold))
+                                              fontSize: 15,color: Colors.white , fontWeight: FontWeight.bold))
                                       ),
                                     ),
-                                    SizedBox(height: 5),
                                     Padding(padding: EdgeInsets.only(bottom: 5),child:
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -707,14 +710,13 @@ class AssortmentState extends State<Assortment>{
                                     ),
                                     SizedBox(height: 5),
                                     SizedBox(
-                                      height: height*0.16,
+                                      height: height*0.175,
                                       child: Text(
                                           description,
                                           style: GoogleFonts.comicNeue(textStyle: const TextStyle(
-                                              fontSize: 14,color: Colors.white , fontWeight: FontWeight.bold))
+                                              fontSize: 15,color: Colors.white , fontWeight: FontWeight.bold))
                                       ),
                                     ),
-                                    SizedBox(height: 5),
                                     Padding(padding: EdgeInsets.only(bottom: 5),child:
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

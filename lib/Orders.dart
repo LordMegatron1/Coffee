@@ -46,7 +46,7 @@ class getinfo extends StatelessWidget{
       QuerySnapshot querySnapshot = await collectiontogetOrders.get();
 
       // Get data from docs and it will be json string
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toString();
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList().toString();
       //show json string ->
       String workingstring = allData.substring(1,allData.length-1).replaceAll(":", "").replaceAll("{", "").replaceAll("}", "");
 
@@ -97,7 +97,7 @@ class getinfo extends StatelessWidget{
       QuerySnapshot querySnapshot = await collectiontogetFavorites.get();
 
       // Get data from docs and it will be json string
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toString();
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList().toString();
       //show json string ->
       String workingstring = allData.substring(1,allData.length-1).replaceAll(":", "").replaceAll("{", "").replaceAll("}", "");
 
@@ -396,14 +396,13 @@ class OrderState extends State<Order>{
                                     ),
                                     SizedBox(height: 5),
                                     SizedBox(
-                                      height: height*0.16,
+                                      height: height*0.175,
                                       child: Text(
                                           description,
                                           style: GoogleFonts.comicNeue(textStyle: const TextStyle(
-                                              fontSize: 14,color: Colors.white , fontWeight: FontWeight.bold))
+                                              fontSize: 18,color: Colors.white , fontWeight: FontWeight.bold))
                                       ),
                                     ),
-                                    SizedBox(height: 5),
                                     Padding(padding: EdgeInsets.only(bottom: 5),child:
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

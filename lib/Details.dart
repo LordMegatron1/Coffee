@@ -46,9 +46,6 @@ class _DetailsPageState extends State<DetailsPage> {
 
   //add firebase here
   final FirebaseAuth auth = FirebaseAuth.instance;
-
-
-
   //get uid -->
   String uid(){
     final User? user = auth.currentUser;
@@ -56,8 +53,7 @@ class _DetailsPageState extends State<DetailsPage> {
     String u_id = userid;
     return 'Your UID : $u_id';
   }
-
-
+  
   @override
   Widget build(BuildContext context) {
     //now we should create method to add our order to orders -->
